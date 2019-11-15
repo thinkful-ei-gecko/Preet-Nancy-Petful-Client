@@ -14,10 +14,10 @@ class AdoptionPage extends React.Component {
       }
     
       async componentDidMount() {
-        //const userReq = PetfulApiService.listUsers();
-        const animalReq = PetfulApiService.fetchAnimals();
+        const userReq = PetfulApiService.listUsers();
+        const animalReq = PetfulApiService.fetchAnimal();
     
-        const [users, animals] = await Promise.all([ animalReq])//userReq,
+        const [users, animals] = await Promise.all([userReq, animalReq])//
     
         const intervalId = setInterval(() => {
           this.adopt('dog');
@@ -58,6 +58,7 @@ class AdoptionPage extends React.Component {
       }
     
       renderUsers = (users) => {
+        //console.log(users);
         return users.map((user, i) => {
           return <div className={(i === 0 ? 'user active' : 'user')} key={i}>
             <h4>{user.name}</h4>
@@ -68,22 +69,22 @@ class AdoptionPage extends React.Component {
       renderAnimal = (animal) => {
         return (<div className='animal'>
           <img src={animal.photo} alt='animal-profile-img' className='responsive'></img>
-          <h2>Name: {animal.name}</h2>
+          <h3>Name: {animal.name}</h3>
           <p>Size: {animal.size}</p>
           <p>Gender: {animal.gender}</p>
           <p>Description: {animal.description}</p>
         </div>);
       }
     
-      renderRecentlyAdopted = () => {
-        return (
-          this.state.recentlyAdopted.map((result, i) => {
-            return <div className='adopted' key={i}>
-              <p>{result.user.name} adopted {result.animal.name}</p>
-            </div>
-          })
-        )
-      }
+    //   renderRecentlyAdopted = () => {
+    //     return (
+    //       this.state.recentlyAdopted.map((result, i) => {
+    //         return <div className='adopted' key={i}>
+    //           <p>{result.user.name} adopted {result.animal.name}</p>
+    //         </div>
+    //       })
+    //     )
+    //   }
     
       allowedToAdopt = () => {
         const userObj = localStorage.getItem('petful-user');
@@ -99,8 +100,8 @@ class AdoptionPage extends React.Component {
         const { users, dog, cat } = this.state;
         return (
             <section className='adoptions-page'>
-                <div className='users-wrapper'>
-                    <h2>User Line:</h2>
+                <div className='users'>
+                    <h4>User Line:</h4>
                         {this.renderUsers(users)}   
                 </div>
 
@@ -119,9 +120,9 @@ class AdoptionPage extends React.Component {
                 </div>
 
                 <div className='recently-adopted'>
-                    <h2>Recently Adopted: </h2>
+                    <h4>Recently Adopted: </h4>
                 <div className='adopted-wrapper'>
-                    {this.renderRecentlyAdopted()}
+                    {/* {this.renderRecentlyAdopted()} */}
                 </div>
                 </div>
             </section>

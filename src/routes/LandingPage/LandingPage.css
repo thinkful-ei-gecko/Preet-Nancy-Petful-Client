@@ -20,7 +20,7 @@
 }
 
 label{
-    font-size: 26px;
+    font-size: 25px;
     margin: 20px 0;
 }
 input{
@@ -32,3 +32,5 @@ input{
 button:hover {
     background-color:#ff00ff;
 }
+
+  
