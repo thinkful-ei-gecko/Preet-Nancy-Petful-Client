@@ -15,19 +15,20 @@ class AdoptionPage extends React.Component {
     
       async componentDidMount() {
         const userReq = PetfulApiService.listUsers();
-        const animalReq = PetfulApiService.fetchAnimal();
+        const catReq = PetfulApiService.fetchCat();
+        const dogReq = PetfulApiService.fetchDog();
     
-        const [users, animals] = await Promise.all([userReq, animalReq])//
-    
-        const intervalId = setInterval(() => {
-          this.adopt('dog');
-        }, 10000)
+        const [users, cat, dog ] = await Promise.all([userReq, catReq, dogReq])//
+        console.log('in component did mount', users)
+        // const intervalId = setInterval(() => {
+        //   this.adopt('dog');
+        // }, 10000)
     
         this.setState({
-          users,
-          dog: animals.dog,
-          cat: animals.cat,
-          intervalId
+          users: users.adoptorsLine,
+          dog: dog.dog,
+          cat: cat.cat,
+          // intervalId
         })
       }
     
@@ -39,6 +40,7 @@ class AdoptionPage extends React.Component {
       }
     
       adopt = async(animal) => {
+        console.log('in adopt, adopting a', animal)
         const response = await PetfulApiService.adopt(animal)
         const newAnimal = await PetfulApiService.fetchAnimal(animal)
     
@@ -58,21 +60,32 @@ class AdoptionPage extends React.Component {
       }
     
       renderUsers = (users) => {
-        //console.log(users);
+        console.log(users);
         return users.map((user, i) => {
           return <div className={(i === 0 ? 'user active' : 'user')} key={i}>
-            <h4>{user.name}</h4>
+            <h4>{user}</h4>
           </div>
         })
       }
     
-      renderAnimal = (animal) => {
+      renderCat = (animal) => {
+        
         return (<div className='animal'>
-          <img src={animal.photo} alt='animal-profile-img' className='responsive'></img>
+          <img src={animal.imageURL} alt='animal-profile-img' className='responsive'/>
           <h3>Name: {animal.name}</h3>
-          <p>Size: {animal.size}</p>
-          <p>Gender: {animal.gender}</p>
-          <p>Description: {animal.description}</p>
+          <p>Breed: {animal.breed}</p>
+          <p>Gender: {animal.sex}</p>
+          <p>Story: {animal.story}</p>
+        </div>);
+      }
+
+      renderDog = (animal) => {
+        return (<div className='animal'>
+          <img src={animal.imageURL} alt='animal-profile-img' className='responsive'/>
+          <h3>Name: {animal.name}</h3>
+          <p>Breed: {animal.breed}</p>
+          <p>Gender: {animal.sex}</p>
+          <p>Story: {animal.story}</p>
         </div>);
       }
     
@@ -87,6 +100,8 @@ class AdoptionPage extends React.Component {
     //   }
     
       allowedToAdopt = () => {
+
+        console.log('checking user')
         const userObj = localStorage.getItem('petful-user');
         const name = JSON.parse(userObj).name;
     
@@ -97,6 +112,7 @@ class AdoptionPage extends React.Component {
       }
 
     render(){
+      console.log(this.state)
         const { users, dog, cat } = this.state;
         return (
             <section className='adoptions-page'>
@@ -109,11 +125,11 @@ class AdoptionPage extends React.Component {
                     <h2>Up Next to Adopt: </h2>
                     <div className='animal-wrapper'>
                         <div className='dog-queue'>
-                            {this.renderAnimal(dog)}
+                            {this.renderDog(dog)}
                             <button className='button primary' onClick={() => this.adopt('dog')} disabled={this.allowedToAdopt()}>Adopt</button>
                          </div>
                         <div className='cat-queue'>
-                            {this.renderAnimal(cat)}
+                            {this.renderCat(cat)}
                             <button className='button primary' onClick={() => this.adopt('cat')} disabled={this.allowedToAdopt()}>Adopt</button>
                         </div>
                     </div>
