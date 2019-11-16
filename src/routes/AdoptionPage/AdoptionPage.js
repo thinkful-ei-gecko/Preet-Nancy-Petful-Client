@@ -19,20 +19,22 @@ class AdoptionPage extends React.Component {
         const dogReq = PetfulApiService.fetchDog();
     
         const [users, cat, dog ] = await Promise.all([userReq, catReq, dogReq])//
-        console.log('in component did mount', users)
-        // const intervalId = setInterval(() => {
-        //   this.adopt('cat');
-        // }, 10000)
+        // console.log('in component did mount', users)
+
+        const intervalId = setInterval(() => {
+          this.adopt('dog');
+        }, 10000)
     
         this.setState({
           users: users.adoptorsLine,
           dog: dog.dog,
           cat: cat.cat,
-          // intervalId
+          intervalId
         })
       }
     
       async componentDidUpdate(prevProps, prevState) {
+        console.log('in componeneDidUpdate')
         if (prevState.users.length !== 0 && this.state.users.length === 0) {
           const newUsers = await PetfulApiService.refreshUsers();
           this.setState({ users: newUsers })
@@ -40,31 +42,24 @@ class AdoptionPage extends React.Component {
       }
     
       adopt = async(animal) => {
-        console.log('in adopt, adopting a', animal)
+        // console.log('in adopt, adopting a', animal)
         const response = await PetfulApiService.adopt(animal)
-
-        let newAnimal
-        if(animal === 'cat'){
-          console.log('in adopt cat', animal)
-          newAnimal = await PetfulApiService.fetchCat(animal)
-        }
-        else if (animal === 'dog') {
-          console.log('in adopt dog', animal)
-          newAnimal = await PetfulApiService.fetchDog(animal)
-        }
-        // const newAnimal = await PetfulApiService.fetchAnimal(animal)
+        const newAnimal = await PetfulApiService.fetchAnimals(animal)
+        const newUsers = await PetfulApiService.listUsers()
     
         this.setState({
-          recentlyAdopted: [response, ...this.state.recentlyAdopted],
+          recentlyAdopted: response.adoptedList,
           [animal]: newAnimal[animal],
-          users: this.state.users.slice(1),
+          users: newUsers.adoptorsLine,
           counter: this.state.counter + 1
         }, this.cancelInterval)
       }
     
       cancelInterval = () => {
+        
         const { counter } = this.state;
         if (counter >= 4) {
+          console.log('clearing interval')
           clearInterval(this.state.intervalId)
         }
       }
@@ -99,22 +94,22 @@ class AdoptionPage extends React.Component {
         </div>);
       }
     
-    //   renderRecentlyAdopted = () => {
-    //     return (
-    //       this.state.recentlyAdopted.map((result, i) => {
-    //         return <div className='adopted' key={i}>
-    //           <p>{result.user.name} adopted {result.animal.name}</p>
-    //         </div>
-    //       })
-    //     )
-    //   }
+      renderRecentlyAdopted = () => {
+        return (
+          this.state.recentlyAdopted.map((result, i) => {
+            return <div className='adopted' key={i}>
+              <p>{/*result.name*/} {result.name}</p>
+            </div>
+          })
+        )
+      }
     
       allowedToAdopt = () => {
 
         console.log('checking user')
         const userObj = localStorage.getItem('petful-user');
         const name = JSON.parse(userObj).name;
-    
+        console.log(name)
         if (this.state.users.length) {
           return this.state.users[0].name !== name
         }
@@ -136,7 +131,7 @@ class AdoptionPage extends React.Component {
                     <div className='animal-wrapper'>
                         <div className='dog-queue'>
                             {this.renderDog(dog)}
-                            <button className='button primary' onClick={() => this.adopt('dog')} /*disabled={this.allowedToAdopt()}*/ >Adopt</button>
+                            <button className='button primary' onClick={() => this.adopt('dog')} /*disabled={this.allowedToAdopt()} */>Adopt</button>
                          </div>
                         <div className='cat-queue'>
                             {this.renderCat(cat)}
@@ -148,7 +143,7 @@ class AdoptionPage extends React.Component {
                 <div className='recently-adopted'>≈
                     <h4>Recently Adopted: </h4>
                 <div className='adopted-wrapper'>
-                    {/* {this.renderRecentlyAdopted()} */}
+                    {this.renderRecentlyAdopted()}
                 </div>
                 </div>
             </section>

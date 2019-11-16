@@ -21,15 +21,15 @@ const PetfulApiService = {
     }
     return res.json();
   },
-  // async fetchAnimals() {
-  //     const res = await fetch(`${config.API_ENDPOINT}`)
-  //     if (!res.ok) {
-  //       res.json().then(e => Promise.reject(e))
-  //     }
-  //     return res.json();
-  // },
+  async fetchAnimals(animal) {
+      const res = await fetch(`${config.API_ENDPOINT}/${animal}`)
+      if (!res.ok) {
+        res.json().then(e => Promise.reject(e))
+      }
+      return res.json();
+  },
   async fetchDog() {
-    console.log('fetching dog')
+    // console.log('fetching dog')
     const res = await fetch(`${config.API_ENDPOINT}/dog`)
     if (!res.ok) {
       res.json().then(e => Promise.reject(e))
@@ -44,7 +44,7 @@ const PetfulApiService = {
     return res.json();
   },
   async adopt(animal) {
-    console.log('making adopt call')
+    // console.log('making adopt call')
     const res = await fetch(`${config.API_ENDPOINT}/${animal}`, {
       method: 'DELETE'
     })
@@ -54,6 +54,7 @@ const PetfulApiService = {
     return res.json();
   },
   async refreshUsers() {
+    console.log('getting users from endpoint/adoptor')
     const res = await fetch(`${config.API_ENDPOINT}/adoptor`)
     if (!res.ok) {
       res.json().then(e => Promise.reject(e))
