@@ -21,7 +21,7 @@ class AdoptionPage extends React.Component {
         const [users, cat, dog ] = await Promise.all([userReq, catReq, dogReq])//
         console.log('in component did mount', users)
         // const intervalId = setInterval(() => {
-        //   this.adopt('dog');
+        //   this.adopt('cat');
         // }, 10000)
     
         this.setState({
@@ -42,7 +42,17 @@ class AdoptionPage extends React.Component {
       adopt = async(animal) => {
         console.log('in adopt, adopting a', animal)
         const response = await PetfulApiService.adopt(animal)
-        const newAnimal = await PetfulApiService.fetchAnimal(animal)
+
+        let newAnimal
+        if(animal === 'cat'){
+          console.log('in adopt cat', animal)
+          newAnimal = await PetfulApiService.fetchCat(animal)
+        }
+        else if (animal === 'dog') {
+          console.log('in adopt dog', animal)
+          newAnimal = await PetfulApiService.fetchDog(animal)
+        }
+        // const newAnimal = await PetfulApiService.fetchAnimal(animal)
     
         this.setState({
           recentlyAdopted: [response, ...this.state.recentlyAdopted],
@@ -126,16 +136,16 @@ class AdoptionPage extends React.Component {
                     <div className='animal-wrapper'>
                         <div className='dog-queue'>
                             {this.renderDog(dog)}
-                            <button className='button primary' onClick={() => this.adopt('dog')} disabled={this.allowedToAdopt()}>Adopt</button>
+                            <button className='button primary' onClick={() => this.adopt('dog')} /*disabled={this.allowedToAdopt()}*/ >Adopt</button>
                          </div>
                         <div className='cat-queue'>
                             {this.renderCat(cat)}
-                            <button className='button primary' onClick={() => this.adopt('cat')} disabled={this.allowedToAdopt()}>Adopt</button>
+                            <button className='button primary' onClick={() => this.adopt('cat')} /*disabled={this.allowedToAdopt()}*/>Adopt</button>
                         </div>
                     </div>
                 </div>
 
-                <div className='recently-adopted'>
+                <div className='recently-adopted'>≈
                     <h4>Recently Adopted: </h4>
                 <div className='adopted-wrapper'>
                     {/* {this.renderRecentlyAdopted()} */}
