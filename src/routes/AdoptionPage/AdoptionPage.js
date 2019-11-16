@@ -19,7 +19,6 @@ class AdoptionPage extends React.Component {
         const dogReq = PetfulApiService.fetchDog();
     
         const [users, cat, dog ] = await Promise.all([userReq, catReq, dogReq])//
-        // console.log('in component did mount', users)
 
         const intervalId = setInterval(() => {
           this.adopt('dog');
@@ -42,7 +41,6 @@ class AdoptionPage extends React.Component {
       }
     
       adopt = async(animal) => {
-        // console.log('in adopt, adopting a', animal)
         const response = await PetfulApiService.adopt(animal)
         const newAnimal = await PetfulApiService.fetchAnimals(animal)
         const newUsers = await PetfulApiService.listUsers()

@@ -29,7 +29,6 @@ const PetfulApiService = {
       return res.json();
   },
   async fetchDog() {
-    // console.log('fetching dog')
     const res = await fetch(`${config.API_ENDPOINT}/dog`)
     if (!res.ok) {
       res.json().then(e => Promise.reject(e))
@@ -44,7 +43,6 @@ const PetfulApiService = {
     return res.json();
   },
   async adopt(animal) {
-    // console.log('making adopt call')
     const res = await fetch(`${config.API_ENDPOINT}/${animal}`, {
       method: 'DELETE'
     })
