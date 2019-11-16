@@ -20,15 +20,15 @@ class AdoptionPage extends React.Component {
     
         const [users, cat, dog ] = await Promise.all([userReq, catReq, dogReq])//
         console.log('in component did mount', users)
-        // const intervalId = setInterval(() => {
-        //   this.adopt('dog');
-        // }, 10000)
+        const intervalId = setInterval(() => {
+          this.adopt('dog');
+        }, 10000)
     
         this.setState({
           users: users.adoptorsLine,
           dog: dog.dog,
           cat: cat.cat,
-          // intervalId
+          intervalId
         })
       }
     
@@ -42,7 +42,7 @@ class AdoptionPage extends React.Component {
       adopt = async(animal) => {
         console.log('in adopt, adopting a', animal)
         const response = await PetfulApiService.adopt(animal)
-        const newAnimal = await PetfulApiService.fetchAnimal(animal)
+        const newAnimal = await PetfulApiService.fetchAnimals(animal)
     
         this.setState({
           recentlyAdopted: [response, ...this.state.recentlyAdopted],
@@ -89,15 +89,15 @@ class AdoptionPage extends React.Component {
         </div>);
       }
     
-    //   renderRecentlyAdopted = () => {
-    //     return (
-    //       this.state.recentlyAdopted.map((result, i) => {
-    //         return <div className='adopted' key={i}>
-    //           <p>{result.user.name} adopted {result.animal.name}</p>
-    //         </div>
-    //       })
-    //     )
-    //   }
+      renderRecentlyAdopted = () => {
+        return (
+          this.state.recentlyAdopted.map((result, i) => {
+            return <div className='adopted' key={i}>
+              <p>{result.user.name} adopted {result.animal.name}</p>
+            </div>
+          })
+        )
+      }
     
       allowedToAdopt = () => {
 

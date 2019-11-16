@@ -21,13 +21,13 @@ const PetfulApiService = {
     }
     return res.json();
   },
-  // async fetchAnimals() {
-  //     const res = await fetch(`${config.API_ENDPOINT}`)
-  //     if (!res.ok) {
-  //       res.json().then(e => Promise.reject(e))
-  //     }
-  //     return res.json();
-  // },
+  async fetchAnimals(animal) {
+      const res = await fetch(`${config.API_ENDPOINT}/${animal}`)
+      if (!res.ok) {
+        res.json().then(e => Promise.reject(e))
+      }
+      return res.json();
+  },
   async fetchDog() {
     console.log('fetching dog')
     const res = await fetch(`${config.API_ENDPOINT}/dog`)
