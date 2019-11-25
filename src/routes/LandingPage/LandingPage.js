@@ -3,16 +3,20 @@ import PetfulApiService from '../../services/petful-api-service';
 import './LandingPage.css';
 
 class LandingPage extends React.Component {    
+
    async handleSubmit(e) {
         e.preventDefault();
         const { name } = e.target
+
         const newUser = {
           name: name.value,
         };
+
         localStorage.setItem('petful-user', JSON.stringify(newUser));
         await PetfulApiService.createUser(newUser);
         this.props.history.push('/adopted')
       }
+  
     
   render() {
     return (

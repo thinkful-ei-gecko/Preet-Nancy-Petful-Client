@@ -42,9 +42,14 @@ const PetfulApiService = {
     }
     return res.json();
   },
-  async adopt(animal) {
+  async adopt(animal, name) {
+
     const res = await fetch(`${config.API_ENDPOINT}/${animal}`, {
-      method: 'DELETE'
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(name)
     })
     if (!res.ok) {
       res.json().then(e => Promise.reject(e))
@@ -52,13 +57,11 @@ const PetfulApiService = {
     return res.json();
   },
   async refreshUsers() {
-    console.log('getting users from endpoint/adoptor')
     const res = await fetch(`${config.API_ENDPOINT}/adoptor`)
     if (!res.ok) {
       res.json().then(e => Promise.reject(e))
     }
     return res.json();
-  },
-
+  }
 }
 export default PetfulApiService;

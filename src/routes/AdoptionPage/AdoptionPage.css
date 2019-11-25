@@ -58,3 +58,8 @@
       display: flex;
       flex-direction: column;
   }
+
+  .adopted-wrapper{
+    height: 70%;
+    overflow-y: auto;
+  }
