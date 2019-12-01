@@ -4,7 +4,7 @@ Petful adoption is a first come first serve pet adoptation app. Users create an 
 
 ## Details
 
-* The live app can be found at: [https://petful-app.preetsingh13.now.sh](https://petful-app.preetsingh13.now.sh)
+* The live app can be found at: [https://petful-app-new.now.sh/adopted](https://petful-app.preetsingh13.now.sh)
 
 * Client Repo: [https://github.com/thinkful-ei-gecko/Preet-Nancy-Petful-Client](https://github.com/thinkful-ei-gecko/Preet-Nancy-Petful-Client)
 
